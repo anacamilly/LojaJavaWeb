@@ -43,10 +43,7 @@ public class ProdutosController {
 
         if(ProdutoDAO.verificacao(produtos.getCodigo())==null){
             ProdutoDAO.cadastrar(produtos);
-
-            RequestDispatcher encaminhar = request.getRequestDispatcher("/login-clientes");
-            encaminhar.forward(request, response);
-            
+            writer.println("Produto cadastrado com sucesso");
         }else{
             writer.println("ERROR: Codigo já cadastrado");
         }

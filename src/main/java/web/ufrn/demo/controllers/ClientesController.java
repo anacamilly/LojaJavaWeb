@@ -2,7 +2,6 @@ package web.ufrn.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -63,17 +62,16 @@ public class ClientesController {
         cliente.setSenha(senha);
 
         if(ClienteDAO.login(cliente.getEmail(), cliente.getSenha())!=null){
-
-            RequestDispatcher encaminhar = request.getRequestDispatcher("/inicio-clientes");
-            encaminhar.forward(request, response);           
+           response.sendRedirect("/inicio-clientes");
         }else{
-            writer.println("ERROR: usuario não cadastrado");
+            writer.println("ERROR: Email não cadastrado");
         }
     }
 
-    @GetMapping("/inicio-clientes")
-    public String pagInicialClientes(){
-        return "pagInicialClientes";
+    
+    @RequestMapping(value = "/inicio-clientes")
+    private void pagInicialClientes(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.sendRedirect("clientes/pagInicialClientes.html");
     }
 
 

@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import web.ufrn.demo.entidades.Produtos;
 
 public class ProdutoDAO {
-    private final static String CADASTRO = "insert into tb_produtos (nome, descricao, preco, quantidade) values (?,?,?,?)";
+    private final static String CADASTRO = "insert into tb_produtos (codigo, nome, descricao, preco, quantidade) values (?,?,?,?)";
     private final static String VERIFICACAO = "select * from tb_produtos where codigo=?";
 
     ////////////////////////////// CADASTRO //////////////////////////////

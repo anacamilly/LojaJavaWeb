@@ -2,7 +2,6 @@ package web.ufrn.demo.controllers;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,12 +29,16 @@ public class LojistasController {
         lojista.setSenha(senha);
 
         if( LojistasDAO.login(lojista.getEmail(), lojista.getSenha())!=null){
-
-            RequestDispatcher encaminhar = request.getRequestDispatcher("/inicio-clientes");
-            encaminhar.forward(request, response);           
+            response.sendRedirect("/inicio-lojistas");           
         }else{
             writer.println("ERROR: lojista não cadastrado");
         }
+    }
+
+    
+    @RequestMapping(value = "/inicio-lojistas")
+    private void pagInicialClientes(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.sendRedirect("lojistas/pagInicialLojistas.html");
     }
     
 }
