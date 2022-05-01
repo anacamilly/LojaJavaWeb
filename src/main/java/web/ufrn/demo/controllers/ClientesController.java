@@ -10,6 +10,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
@@ -51,6 +53,7 @@ public class ClientesController {
 
     @RequestMapping(value = "/login-clientes", method = RequestMethod.POST)
     public void LoginClientes(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+         
         var email = request.getParameter("email");
         var senha = request.getParameter("senha");
 
@@ -74,6 +77,16 @@ public class ClientesController {
         response.sendRedirect("clientes/pagInicialClientes.html");
     }
 
+        
+    @RequestMapping(value = "/logout")
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        HttpSession session = request.getSession();
+
+        if(session != null){
+            session.invalidate();
+            response.sendRedirect("index.html");
+        }
+    }
 
     @RequestMapping("/conexao")
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{

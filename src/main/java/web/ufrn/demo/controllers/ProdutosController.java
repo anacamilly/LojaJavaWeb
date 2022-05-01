@@ -23,7 +23,7 @@ public class ProdutosController {
     ServletContext servletContext;
 
     @RequestMapping(value = "/cadastro-produtos", method = RequestMethod.POST)
-    public void CadastroClientes(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void CadastroProdutos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         var codigo = request.getParameter("codigo");
         var nome = request.getParameter("nome");
         var descricao = request.getParameter("descricao");
