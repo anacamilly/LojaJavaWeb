@@ -48,5 +48,11 @@ public class ProdutosController {
             writer.println("ERROR: Codigo já cadastrado");
         }
     }
-    
+ 
+    @RequestMapping(value = "/lista-de-produtos", method = RequestMethod.POST)
+    public void ListarProdutos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        var writer = response.getWriter();
+
+        writer.println(ProdutoDAO.listar());
+    }
 }

@@ -1,13 +1,17 @@
 package web.ufrn.demo.DAOS;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import web.ufrn.demo.entidades.Produtos;
 
 public class ProdutoDAO {
-    private final static String CADASTRO = "insert into tb_produtos (codigo, nome, descricao, preco, quantidade) values (?,?,?,?)";
+    private final static String CADASTRO = "insert into tb_produtos (codigo, nome, descricao, preco, quantidade) values (?,?,?,?,?)";
     private final static String VERIFICACAO = "select * from tb_produtos where codigo=?";
+    private final static String LISTAR =  "SELECT * FROM tb_produtos";
 
     ////////////////////////////// CADASTRO //////////////////////////////
     public static void cadastrar(Produtos produtos){
@@ -48,4 +52,52 @@ public class ProdutoDAO {
 
         return produtos;
     }
+
+    ////////////////////////////// LISTAR //////////////////////////////
+    public static List<Produtos> listar(){
+	
+        List <Produtos> produto = new ArrayList<Produtos>();
+        Connection connection = null;
+        PreparedStatement prep = null;
+        ResultSet lista = null;
+        
+        try {
+            connection = Conexao.getConnection();
+    
+            prep = connection.prepareStatement(LISTAR);
+            
+            lista= prep.executeQuery();
+            
+            
+            while(lista.next()) {
+                Produtos produtos = new Produtos();
+                produtos.setCodigo(lista.getInt("codigo"));
+                produtos.setNome(lista.getString("nome"));
+                produtos.setDescricao( lista.getString("descricao"));
+                produtos.setPreco(lista.getFloat("preco"));
+                produtos.setQuantidade(lista.getInt("quantidade"));
+                produto.add(produtos);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("erro: " + e.getMessage());
+        }finally {
+            //////fecha conexões
+            try {
+                if(lista!=null) {
+                    prep.close();
+                    connection.close();
+                }if (prep!=null) {
+                    prep.close();
+                }if(connection!=null) {
+                    connection.close();
+                }
+            } catch (Exception e2) {
+             System.out.println("erro: " + e2.getMessage());
+            }
+        
+        }
+        return produto;
+        }
+    
 }
