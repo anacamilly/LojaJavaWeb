@@ -1,6 +1,7 @@
 package web.ufrn.demo.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import web.ufrn.demo.DAOS.ProdutoDAO;
 import web.ufrn.demo.entidades.Produtos;
@@ -49,10 +51,10 @@ public class ProdutosController {
         }
     }
  
-    @RequestMapping(value = "/lista-de-produtos", method = RequestMethod.POST)
+    @RequestMapping(value = "/lista-de-produtos", method = RequestMethod.GET)
     public void ListarProdutos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        var writer = response.getWriter();
-
-        writer.println(ProdutoDAO.listar());
+        List<Produtos> produtos = ProdutoDAO.listar();
+        ModelAndView modelAndView = new ModelAndView("lojistas/produtos.html");
+        modelAndView.addObject("produtos", produtos);
     }
 }

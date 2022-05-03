@@ -23,7 +23,6 @@ public class LojistasDAO {
 
             if(rs.next()){
                 lojista = new Lojistas(rs.getString("Email"), rs.getString("senha"));
-            
             }
             instrucao.close();
 

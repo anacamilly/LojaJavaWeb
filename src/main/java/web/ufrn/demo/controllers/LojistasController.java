@@ -38,6 +38,7 @@ public class LojistasController {
     
     @RequestMapping(value = "/inicio-lojistas")
     private void pagInicialClientes(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        
         response.sendRedirect("lojistas/pagInicialLojistas.html");
     }
     
