@@ -73,7 +73,7 @@ public class LojistasController {
             writer.println("<body>");
             writer.println("<h1> Página Inicial - Lojistas </h1>");
             writer.println("<h3>Bem-vindo: " + lojistas + "</h3>");
-            writer.println("<a href='/cadastro-produtos'> Cadastro de Produtos </a><br/>");
+            writer.println("<a href='/lojistas/cadastroProdutos.html'> Cadastro de Produtos </a><br/>");
             writer.println("<a href='/lista-de-produtos'> Produtos </a>");
             writer.println("<hr>");
             writer.println("<form action='/logout' method='get'>");

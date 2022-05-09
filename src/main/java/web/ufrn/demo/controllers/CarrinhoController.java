@@ -105,7 +105,7 @@ public class CarrinhoController {
                     writer.println(p.getPreco());
                     writer.println("</td>");
                     writer.println("<td>");
-                    writer.println("<a href='/removerCarrinho?id="+p.getCodigo()+"'>Remover</a>");
+                    writer.println("<a href='/remover-carrinho?codigo="+p.getCodigo()+"'>Remover</a>");
                     writer.println("</td>");
                     writer.println("</tr>");
                 }
@@ -116,5 +116,22 @@ public class CarrinhoController {
             response.getWriter().println("Carrinho vazio");
         }
     }
+
     
+    @RequestMapping(value="/remover-carrinho", method= RequestMethod.GET)
+    public void doRemoverCarrinho(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        Cookie[] requestCookies = request.getCookies();
+
+        if (requestCookies != null){
+            for (Cookie cookie : requestCookies) {
+                cookie.setValue("");
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+                response.sendRedirect("/visualizar-carrinho");
+            }
+        }
+    }
+
 }
+
