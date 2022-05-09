@@ -2,6 +2,7 @@ package web.ufrn.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -64,11 +66,19 @@ public class ClientesController {
         cliente.setEmail(email);
         cliente.setSenha(senha);
 
-        if(ClienteDAO.login(cliente.getEmail(), cliente.getSenha())!=null){
 
-            
-            request.getSession().setAttribute("email", email);
-           response.sendRedirect("/inicio-clientes");
+        if(ClienteDAO.login(cliente.getEmail(), cliente.getSenha())!=null){    
+            HttpSession session = request.getSession();
+
+            if(session != null){
+                String id = session.getId();
+                //writer.println("id: " + id);
+
+                request.getSession().setAttribute("cliente", email);
+                request.getSession().setAttribute("idSession", id);
+
+                response.sendRedirect("/inicio-clientes");                
+            }
         }else{
             writer.println("ERROR: Email não cadastrado");
         }
@@ -77,14 +87,33 @@ public class ClientesController {
     
     @RequestMapping(value = "/inicio-clientes")
     private void pagInicialClientes(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        response.sendRedirect("clientes/pagInicialClientes.html");
+        var writer = response.getWriter();
+
+        String cliente = (String) request.getSession().getAttribute("cliente");
+        String idSession = (String) request.getSession().getAttribute("idSession");
+ 
+        if(cliente != null){
+            writer.println("<html>");
+            writer.println("<body>");
+            writer.println("<h1> Página Inicial - Clientes </h1>");
+            writer.println("<h3>Bem-vindo: " + cliente + "</h3>");
+            writer.println("<a href='/lista-de-produtos'> Produtos </a><br>");
+            writer.println("<a href='/visualizar-carrinho'> Carrinho de Compras </a><br>");
+            writer.println("<hr>");
+            writer.println(" <button action='/logout' type='submit'>logout</button>");
+            writer.println("<p>Sua sessão é: " + idSession + "</p>");
+            writer.println("</html></body>");
+        }else{
+            response.sendRedirect("/login-clientes");
+        }
+
     }
 
         
-    @RequestMapping(value = "/logout")
+    @GetMapping("/logout")
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
         request.getSession().invalidate();
-        response.sendRedirect("/");
+        response.sendRedirect("/index.html");
     }
 
     @RequestMapping("/conexao")
