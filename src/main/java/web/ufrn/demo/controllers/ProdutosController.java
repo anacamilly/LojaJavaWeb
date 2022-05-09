@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import web.ufrn.demo.DAOS.ProdutoDAO;
-import web.ufrn.demo.entidades.Produtos;
+import web.ufrn.demo.model.Produtos;
+import web.ufrn.demo.repository.ProdutoDAO;
 
 @Controller
 public class ProdutosController {
@@ -52,9 +52,40 @@ public class ProdutosController {
     }
  
     @RequestMapping(value = "/lista-de-produtos", method = RequestMethod.GET)
-    public void ListarProdutos(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        List<Produtos> produtos = ProdutoDAO.listar();
-        ModelAndView modelAndView = new ModelAndView("lojistas/produtos.html");
-        modelAndView.addObject("produtos", produtos);
+    public void doListAll(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        var writer = response.getWriter();
+        writer.println("<html><body>");
+        writer.println("<h1>Lista de Produtos</h1>");
+        writer.println("<table border=1>");
+        var produtoDao = new ProdutoDAO();
+        var listaProdutos = produtoDao.listarProdutos();
+        for (var p:listaProdutos ){
+            writer.println("<tr>");
+            writer.println("<td>");
+            writer.println("<p>Nome:</p>");
+            writer.println(p.getNome());
+            writer.println("</td>");
+            writer.println("<td>");
+            writer.println("<p>Descrição:</p>");
+            writer.println(p.getDescricao());
+            writer.println("</td>");
+            writer.println("<td>");
+            writer.println("<p>Preço:</p>");
+            writer.println(p.getPreco());
+            writer.println("</td>");
+            writer.println("<td>");
+            writer.println("<p>Quantidade:</p>");
+            writer.println(p.getQuantidade());
+            writer.println("</td>");
+            writer.println("<td>");
+            writer.println("<a href='/adicionar-carrinho?codigo="+p.getCodigo()+"'>Adicionar</a>");
+            writer.println("</td>");
+            writer.println("</tr>");
+        }
+
+        writer.println("</table>");
+        writer.println("<br/>");
+        writer.println("<a href='/visualizar-carrinho'>Visualizar Carrinho</a>");
+        writer.println("</body></html>");
     }
 }

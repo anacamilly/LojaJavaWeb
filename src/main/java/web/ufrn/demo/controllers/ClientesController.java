@@ -17,9 +17,9 @@ import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import web.ufrn.demo.DAOS.ClienteDAO;
-import web.ufrn.demo.DAOS.Conexao;
-import web.ufrn.demo.entidades.Clientes;
+import web.ufrn.demo.model.Clientes;
+import web.ufrn.demo.repository.ClienteDAO;
+import web.ufrn.demo.repository.Conexao;
 
 @Controller
 public class ClientesController {
@@ -65,6 +65,9 @@ public class ClientesController {
         cliente.setSenha(senha);
 
         if(ClienteDAO.login(cliente.getEmail(), cliente.getSenha())!=null){
+
+            
+            request.getSession().setAttribute("email", email);
            response.sendRedirect("/inicio-clientes");
         }else{
             writer.println("ERROR: Email não cadastrado");
@@ -80,12 +83,8 @@ public class ClientesController {
         
     @RequestMapping(value = "/logout")
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        HttpSession session = request.getSession();
-
-        if(session != null){
-            session.invalidate();
-            response.sendRedirect("index.html");
-        }
+        request.getSession().invalidate();
+        response.sendRedirect("/");
     }
 
     @RequestMapping("/conexao")

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import web.ufrn.demo.DAOS.LojistasDAO;
-import web.ufrn.demo.entidades.Lojistas;
+import web.ufrn.demo.model.Lojistas;
+import web.ufrn.demo.repository.LojistasDAO;
 
 @Controller
 public class LojistasController {
