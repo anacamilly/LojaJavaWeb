@@ -12,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,6 +27,20 @@ public class ClientesController {
 
     @Autowired
     ServletContext servletContext;
+
+    @RequestMapping(value = "/clientes", method = RequestMethod.GET)
+    private void lojistas(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        
+        var writer = response.getWriter();
+
+        writer.println("<html>");
+        writer.println("<body>");
+        writer.println("<h1> Clientes </h1>");
+        writer.println("<a href='/clientes/loginClientes.html'> Login </a><br/>");
+        writer.println("<a href='/clientes/cadastro.html'> Cadastro </a><br/>");
+        writer.println("</html></body>");
+
+    }
 
     @RequestMapping(value = "/cadastro-clientes", method = RequestMethod.POST)
     public void CadastroClientes(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -85,7 +98,7 @@ public class ClientesController {
     }
 
     
-    @RequestMapping(value = "/inicio-clientes")
+    @RequestMapping("/inicio-clientes")
     private void pagInicialClientes(HttpServletRequest request, HttpServletResponse response) throws IOException{
         var writer = response.getWriter();
 
@@ -100,15 +113,16 @@ public class ClientesController {
             writer.println("<a href='/lista-de-produtos'> Produtos </a><br>");
             writer.println("<a href='/visualizar-carrinho'> Carrinho de Compras </a><br>");
             writer.println("<hr>");
-            writer.println(" <button action='/logout' type='submit'>logout</button>");
+            writer.println("<form action='/logout' method='get'>");
+            writer.println(" <button type='submit'>logout</button>");
+            writer.println("</form>");
             writer.println("<p>Sua sessão é: " + idSession + "</p>");
             writer.println("</html></body>");
         }else{
-            response.sendRedirect("/login-clientes");
+            response.sendRedirect("/clientes/loginClientes.html");
         }
 
     }
-
         
     @GetMapping("/logout")
     private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException{
